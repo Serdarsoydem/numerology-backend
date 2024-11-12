@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "meeting_logs",
+  "info": {
+    "singularName": "meeting-log",
+    "pluralName": "meeting-logs",
+    "displayName": "MeetingLog"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "meeting_logs"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "planlandı",
+        "tamammlandı",
+        "iptal edildi"
+      ]
+    }
+  }
+}

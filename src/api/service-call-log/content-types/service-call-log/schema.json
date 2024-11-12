@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_call_logs",
+  "info": {
+    "singularName": "service-call-log",
+    "pluralName": "service-call-logs",
+    "displayName": "ServiceCallLog"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "service_call_log"
+    },
+    "inputData": {
+      "type": "json"
+    },
+    "response": {
+      "type": "blocks"
+    },
+    "date": {
+      "type": "datetime"
+    }
+  }
+}

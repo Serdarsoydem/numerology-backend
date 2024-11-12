@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "plans",
+  "info": {
+    "singularName": "plan",
+    "pluralName": "plans",
+    "displayName": "Plan",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "serviceUsages": {
+      "type": "integer"
+    },
+    "consultantMeetings": {
+      "type": "integer"
+    },
+    "content": {
+      "type": "blocks"
+    },
+    "price": {
+      "type": "decimal"
+    },
+    "user_subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-subscription.user-subscription",
+      "mappedBy": "plan"
+    }
+  }
+}
