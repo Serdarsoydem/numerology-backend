@@ -12,26 +12,8 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Title": {
+    "title": {
       "type": "string"
-    },
-    "Description": {
-      "type": "string"
-    },
-    "storyMedia": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "videos"
-      ]
-    },
-    "CTA": {
-      "displayName": "CTA",
-      "type": "component",
-      "repeatable": true,
-      "component": "shared.cta"
     },
     "category": {
       "type": "relation",
@@ -56,14 +38,57 @@
       "type": "datetime"
     },
     "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "price": {
-      "type": "integer"
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "slug": {
+      "type": "customField",
+      "options": {
+        "pattern": "title"
+      },
+      "customField": "plugin::slug.slug"
+    },
+    "location": {
+      "type": "dynamiczone",
+      "components": [
+        "shared.on-site",
+        "shared.online-location"
+      ],
+      "max": 1
+    },
+    "video": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "schedule": {
+      "displayName": "Çizelge",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.cizelge"
+    },
+    "content": {
+      "type": "blocks"
+    },
+    "maxCapacity": {
+      "type": "integer",
+      "required": false,
+      "default": -1
     }
   }
 }

@@ -1,0 +1,18 @@
+{
+  "app.components.LeftMenu.navbrand.title": "Kontrol Paneli",
+  "app.components.LeftMenu.navbrand.workplace": "Çalışma Alanı",
+  "Auth.form.email.label": "E-posta",
+  "Auth.form.email.placeholder": "örnek@example.com",
+  "Auth.form.welcome.title": "Strapi'ye Hoşgeldiniz!",
+  "Auth.form.welcome.subtitle": "Hesabınıza giriş yapın",
+  "Auth.form.password.label": "Şifre",
+  "Settings.profile.form.section.experience.interfaceLanguageHelp": "Arayüz dili sadece sizin görünümünüzü etkileyecektir.",
+  "Settings.profile.form.section.experience.mode.label": "Arayüz modu",
+  "Settings.profile.form.section.experience.language.label": "Dil",
+  "global.profile": "Profil",
+  "global.password": "Şifre",
+  "global.change-password": "Şifre Değiştir",
+  "global.email": "E-posta",
+  "global.roles": "Roller",
+  "global.type": "Tip"
+}

@@ -12,18 +12,18 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Profile": {
+    "profile": {
       "type": "blocks"
     },
-    "Name": {
+    "name": {
       "type": "string"
     },
-    "Social": {
+    "social": {
       "type": "component",
       "repeatable": true,
       "component": "shared.social"
     },
-    "Picture": {
+    "image": {
       "type": "media",
       "multiple": false,
       "required": false,
@@ -40,7 +40,7 @@
       "target": "api::blog.blog",
       "mappedBy": "author"
     },
-    "news": {
+    "newses": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::news.news",

@@ -7,10 +7,10 @@
   },
   "options": {},
   "attributes": {
-    "Name": {
+    "name": {
       "type": "string"
     },
-    "Platform": {
+    "platform": {
       "type": "enumeration",
       "enum": [
         "Facebook",
@@ -19,7 +19,7 @@
         "Tiktok"
       ]
     },
-    "Link": {
+    "link": {
       "type": "string"
     }
   }

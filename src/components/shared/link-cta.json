@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_shared_link_ctas",
+  "info": {
+    "displayName": "Link CTA",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "primary",
+        "secondary",
+        "destructive",
+        "link"
+      ],
+      "default": "primary",
+      "required": false
+    },
+    "actionType": {
+      "type": "enumeration",
+      "enum": [
+        "link"
+      ],
+      "default": "link",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_cizelges",
+  "info": {
+    "displayName": "Çizelge"
+  },
+  "options": {},
+  "attributes": {
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "time": {
+      "type": "time"
+    }
+  }
+}

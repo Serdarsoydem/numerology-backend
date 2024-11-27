@@ -23,7 +23,7 @@
     "address": {
       "type": "string"
     },
-    "Name": {
+    "name": {
       "type": "string"
     },
     "socials": {

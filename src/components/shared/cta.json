@@ -1,7 +1,8 @@
 {
   "collectionName": "components_shared_ctas",
   "info": {
-    "displayName": "CTA"
+    "displayName": "Event Registration CTA",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -14,11 +15,21 @@
         "link"
       ]
     },
-    "Text": {
+    "text": {
       "type": "string"
     },
-    "Link": {
-      "type": "string"
+    "actionType": {
+      "type": "enumeration",
+      "enum": [
+        "event_registration"
+      ],
+      "default": "event_registration",
+      "required": true
+    },
+    "event": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::event.event"
     }
   }
 }

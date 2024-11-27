@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_shared_online_locations",
+  "info": {
+    "displayName": "Online Location"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "enumeration",
+      "enum": [
+        "zoom",
+        "youtube",
+        "google_meets"
+      ]
+    }
+  }
+}

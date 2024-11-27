@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_on_sites",
+  "info": {
+    "displayName": "On Site"
+  },
+  "options": {},
+  "attributes": {
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "district": {
+      "type": "string"
+    }
+  }
+}

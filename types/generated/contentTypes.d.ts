@@ -930,16 +930,16 @@ export interface ApiAuthorAuthor extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    Profile: Attribute.Blocks;
-    Name: Attribute.String;
-    Social: Attribute.Component<'shared.social', true>;
-    Picture: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    profile: Attribute.Blocks;
+    name: Attribute.String;
+    social: Attribute.Component<'shared.social', true>;
+    image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     blogs: Attribute.Relation<
       'api::author.author',
       'oneToMany',
       'api::blog.blog'
     >;
-    news: Attribute.Relation<
+    newses: Attribute.Relation<
       'api::author.author',
       'oneToMany',
       'api::news.news'
@@ -1082,7 +1082,7 @@ export interface ApiContactContact extends Schema.SingleType {
     phone: Attribute.String & Attribute.Required;
     email: Attribute.String & Attribute.Required;
     address: Attribute.String;
-    Name: Attribute.String;
+    name: Attribute.String;
     socials: Attribute.Component<'shared.social', true>;
     decription: Attribute.Text & Attribute.Required;
     createdAt: Attribute.DateTime;
@@ -1148,10 +1148,7 @@ export interface ApiEventEvent extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    Title: Attribute.String;
-    Description: Attribute.String;
-    storyMedia: Attribute.Media<'images' | 'videos'>;
-    CTA: Attribute.Component<'shared.cta', true>;
+    title: Attribute.String;
     category: Attribute.Relation<
       'api::event.event',
       'manyToOne',
@@ -1166,7 +1163,27 @@ export interface ApiEventEvent extends Schema.CollectionType {
       Attribute.Private;
     date: Attribute.DateTime;
     image: Attribute.Media<'images'>;
-    price: Attribute.Integer;
+    price: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>;
+    slug: Attribute.String &
+      Attribute.CustomField<
+        'plugin::slug.slug',
+        {
+          pattern: 'title';
+        }
+      >;
+    location: Attribute.DynamicZone<
+      ['shared.on-site', 'shared.online-location']
+    > &
+      Attribute.SetMinMax<
+        {
+          max: 1;
+        },
+        number
+      >;
+    video: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    schedule: Attribute.Component<'shared.cizelge', true>;
+    content: Attribute.Blocks;
+    maxCapacity: Attribute.Integer & Attribute.DefaultTo<-1>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1454,6 +1471,53 @@ export interface ApiServiceCallLogServiceCallLog extends Schema.CollectionType {
   };
 }
 
+export interface ApiStoryStory extends Schema.CollectionType {
+  collectionName: 'stories';
+  info: {
+    singularName: 'story';
+    pluralName: 'stories';
+    displayName: 'Story';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    slug: Attribute.String &
+      Attribute.CustomField<
+        'plugin::slug.slug',
+        {
+          pattern: 'title';
+        }
+      >;
+    storyMedia: Attribute.Media<'images' | 'videos'>;
+    cta: Attribute.DynamicZone<['shared.cta', 'shared.link-cta']> &
+      Attribute.SetMinMax<
+        {
+          max: 1;
+        },
+        number
+      >;
+    description: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::story.story',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::story.story',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTagTag extends Schema.CollectionType {
   collectionName: 'tags';
   info: {
@@ -1597,6 +1661,7 @@ declare module '@strapi/types' {
       'api::privacy-policy.privacy-policy': ApiPrivacyPolicyPrivacyPolicy;
       'api::service.service': ApiServiceService;
       'api::service-call-log.service-call-log': ApiServiceCallLogServiceCallLog;
+      'api::story.story': ApiStoryStory;
       'api::tag.tag': ApiTagTag;
       'api::terms-and-condition.terms-and-condition': ApiTermsAndConditionTermsAndCondition;
       'api::user-subscription.user-subscription': ApiUserSubscriptionUserSubscription;
