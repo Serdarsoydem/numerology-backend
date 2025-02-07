@@ -9,8 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "draftAndPublish": false,
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -89,6 +88,27 @@
       "relation": "manyToMany",
       "target": "api::event.event",
       "mappedBy": "users"
+    },
+    "name": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "phoneNumber": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "enumeration",
+      "enum": [
+        "image1",
+        "image2",
+        "image3",
+        "image4",
+        "image5",
+        "image6"
+      ],
+      "default": "image1"
     }
   }
 }

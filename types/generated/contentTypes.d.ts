@@ -742,7 +742,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -791,6 +790,13 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToMany',
       'api::event.event'
     >;
+    name: Attribute.String;
+    lastName: Attribute.String;
+    phoneNumber: Attribute.String;
+    avatar: Attribute.Enumeration<
+      ['image1', 'image2', 'image3', 'image4', 'image5', 'image6']
+    > &
+      Attribute.DefaultTo<'image1'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

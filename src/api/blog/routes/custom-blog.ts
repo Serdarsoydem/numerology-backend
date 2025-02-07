@@ -1,5 +1,3 @@
-// src/api/blog/routes/custom-blog.js
-
 export default {
   routes: [
     {
