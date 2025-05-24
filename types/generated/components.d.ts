@@ -1,4 +1,4 @@
-import type { Schema, Attribute } from '@strapi/strapi';
+import type { Attribute, Schema } from '@strapi/strapi';
 
 export interface SharedCizelge extends Schema.Component {
   collectionName: 'components_shared_cizelges';
@@ -14,18 +14,29 @@ export interface SharedCizelge extends Schema.Component {
 export interface SharedCta extends Schema.Component {
   collectionName: 'components_shared_ctas';
   info: {
-    displayName: 'Event Registration CTA';
     description: '';
+    displayName: 'Event Registration CTA';
   };
   attributes: {
-    Variant: Attribute.Enumeration<
-      ['primary', 'secondary', 'destructive', 'link']
-    >;
-    text: Attribute.String;
     actionType: Attribute.Enumeration<['event_registration']> &
       Attribute.Required &
       Attribute.DefaultTo<'event_registration'>;
     event: Attribute.Relation<'shared.cta', 'oneToOne', 'api::event.event'>;
+    text: Attribute.String;
+    Variant: Attribute.Enumeration<
+      ['primary', 'secondary', 'destructive', 'link']
+    >;
+  };
+}
+
+export interface SharedFeatures extends Schema.Component {
+  collectionName: 'components_shared_features';
+  info: {
+    displayName: 'Features';
+  };
+  attributes: {
+    included: Attribute.Boolean;
+    text: Attribute.String;
   };
 }
 
@@ -42,30 +53,18 @@ export interface SharedImage extends Schema.Component {
 export interface SharedLinkCta extends Schema.Component {
   collectionName: 'components_shared_link_ctas';
   info: {
-    displayName: 'Link CTA';
     description: '';
+    displayName: 'Link CTA';
   };
   attributes: {
+    actionType: Attribute.Enumeration<['link']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'link'>;
     url: Attribute.String & Attribute.Required;
     variant: Attribute.Enumeration<
       ['primary', 'secondary', 'destructive', 'link']
     > &
       Attribute.DefaultTo<'primary'>;
-    actionType: Attribute.Enumeration<['link']> &
-      Attribute.Required &
-      Attribute.DefaultTo<'link'>;
-  };
-}
-
-export interface SharedOnSiteLocation extends Schema.Component {
-  collectionName: 'components_shared_on_site_locations';
-  info: {
-    displayName: 'On Site Location';
-  };
-  attributes: {
-    address: Attribute.String;
-    city: Attribute.String;
-    district: Attribute.String;
   };
 }
 
@@ -81,22 +80,34 @@ export interface SharedOnSite extends Schema.Component {
   };
 }
 
+export interface SharedOnSiteLocation extends Schema.Component {
+  collectionName: 'components_shared_on_site_locations';
+  info: {
+    displayName: 'On Site Location';
+  };
+  attributes: {
+    address: Attribute.String;
+    city: Attribute.String;
+    district: Attribute.String;
+  };
+}
+
 export interface SharedOnlineLocation extends Schema.Component {
   collectionName: 'components_shared_online_locations';
   info: {
     displayName: 'Online Location';
   };
   attributes: {
-    url: Attribute.String;
     platform: Attribute.Enumeration<['zoom', 'youtube', 'google_meets']>;
+    url: Attribute.String;
   };
 }
 
 export interface SharedParagraph extends Schema.Component {
   collectionName: 'components_shared_paragraphs';
   info: {
-    displayName: 'Paragraph';
     description: '';
+    displayName: 'Paragraph';
   };
   attributes: {};
 }
@@ -104,14 +115,14 @@ export interface SharedParagraph extends Schema.Component {
 export interface SharedSocial extends Schema.Component {
   collectionName: 'components_shared_socials';
   info: {
+    description: '';
     displayName: 'Social';
     icon: 'link';
-    description: '';
   };
   attributes: {
+    link: Attribute.String;
     name: Attribute.String;
     platform: Attribute.Enumeration<['Facebook', 'Instagram', 'X', 'Tiktok']>;
-    link: Attribute.String;
   };
 }
 
@@ -120,10 +131,11 @@ declare module '@strapi/types' {
     export interface Components {
       'shared.cizelge': SharedCizelge;
       'shared.cta': SharedCta;
+      'shared.features': SharedFeatures;
       'shared.image': SharedImage;
       'shared.link-cta': SharedLinkCta;
-      'shared.on-site-location': SharedOnSiteLocation;
       'shared.on-site': SharedOnSite;
+      'shared.on-site-location': SharedOnSiteLocation;
       'shared.online-location': SharedOnlineLocation;
       'shared.paragraph': SharedParagraph;
       'shared.social': SharedSocial;

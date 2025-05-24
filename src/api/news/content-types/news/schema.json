@@ -60,12 +60,6 @@
       "relation": "oneToOne",
       "target": "api::category.category",
       "inversedBy": "news"
-    },
-    "author": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::author.author",
-      "inversedBy": "newses"
     }
   }
 }

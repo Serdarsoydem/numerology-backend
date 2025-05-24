@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_numerology  # This is just the container name, not the service name
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: numerology_backend
+    ports:
+      - "5432:5432"
+    networks:
+      - microservices-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data_1
+  strapi:
+    container_name: strapi
+    build: .
+    image: strapi:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: postgres  # This correctly refers to the service name
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    volumes:
+      - ./strapi/config:/opt/app/config
+      - ./strapi/src:/opt/app/src
+      - ./strapi/public/uploads:/opt/app/public/uploads
+    ports:
+      - "1337:1337"
+    networks:
+      - microservices-network
+    depends_on:
+      - postgres  # Changed from postgres_numerology to postgres
+volumes:
+  postgres_data:
+networks:
+  microservices-network:
+    driver: bridge
+

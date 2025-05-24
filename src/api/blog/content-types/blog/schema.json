@@ -13,8 +13,7 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string",
-      "label": "Başlık"
+      "type": "string"
     },
     "slug": {
       "type": "customField",
@@ -63,9 +62,8 @@
     },
     "author": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::author.author",
-      "inversedBy": "blogs"
+      "relation": "oneToOne",
+      "target": "admin::user"
     }
   }
 }

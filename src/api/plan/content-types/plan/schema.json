@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -16,23 +16,20 @@
       "type": "string",
       "required": true
     },
-    "serviceUsages": {
-      "type": "integer"
-    },
-    "consultantMeetings": {
-      "type": "integer"
-    },
-    "content": {
-      "type": "blocks"
-    },
     "price": {
       "type": "decimal"
     },
-    "user_subscriptions": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::user-subscription.user-subscription",
-      "mappedBy": "plan"
+    "highlighted": {
+      "type": "boolean"
+    },
+    "features": {
+      "displayName": "Features",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.features"
+    },
+    "description": {
+      "type": "string"
     }
   }
 }
