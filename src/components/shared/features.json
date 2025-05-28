@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_features",
+  "info": {
+    "displayName": "Features"
+  },
+  "options": {},
+  "attributes": {
+    "included": {
+      "type": "boolean"
+    },
+    "text": {
+      "type": "string"
+    }
+  }
+}
