@@ -5,10 +5,10 @@
     "singularName": "plan",
     "pluralName": "plans",
     "displayName": "Plan",
-    "description": ""
+    "description": "Subscription plans"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
@@ -16,20 +16,41 @@
       "type": "string",
       "required": true
     },
-    "price": {
-      "type": "decimal"
+    "description": {
+      "type": "text"
     },
-    "highlighted": {
-      "type": "boolean"
+    "price": {
+      "type": "decimal",
+      "required": true
+    },
+    "duration": {
+      "type": "enumeration",
+      "enum": [
+        "monthly",
+        "quarterly",
+        "yearly"
+      ],
+      "required": true,
+      "default": "monthly"
+    },
+    "service_usage_limit": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "consultant_meeting_limit": {
+      "type": "integer",
+      "required": true,
+      "default": 0
     },
     "features": {
-      "displayName": "Features",
-      "type": "component",
-      "repeatable": true,
-      "component": "shared.features"
+      "type": "json"
     },
-    "description": {
-      "type": "string"
+    "subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-subscription.user-subscription",
+      "mappedBy": "plan"
     }
   }
 }

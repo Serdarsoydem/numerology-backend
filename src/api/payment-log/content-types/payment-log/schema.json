@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "payment_logs",
+  "info": {
+    "singularName": "payment-log",
+    "pluralName": "payment-logs",
+    "displayName": "Payment Log",
+    "description": "Log of all payment transactions"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "amount": {
+      "type": "decimal",
+      "required": true
+    },
+    "currency": {
+      "type": "string",
+      "required": true
+    },
+    "order_id": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "transaction_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "success",
+        "failed"
+      ],
+      "required": true,
+      "default": "pending"
+    },
+    "payment_details": {
+      "type": "json"
+    },
+    "webhook_response": {
+      "type": "json"
+    }
+  }
+}

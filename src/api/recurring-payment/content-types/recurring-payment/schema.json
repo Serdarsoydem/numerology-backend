@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "recurring_payments",
+  "info": {
+    "singularName": "recurring-payment",
+    "pluralName": "recurring-payments",
+    "displayName": "Recurring Payment",
+    "description": "Tekrarlayan ödeme kayıtları"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "plan": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::plan.plan"
+    },
+    "cardToken": {
+      "type": "string",
+      "required": true
+    },
+    "amount": {
+      "type": "decimal",
+      "required": true
+    },
+    "currency": {
+      "type": "string",
+      "required": true,
+      "default": "TRY"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "active",
+        "suspended",
+        "cancelled"
+      ],
+      "required": true,
+      "default": "active"
+    },
+    "nextPaymentDate": {
+      "type": "datetime",
+      "required": true
+    },
+    "lastPaymentDate": {
+      "type": "datetime"
+    },
+    "lastPaymentStatus": {
+      "type": "enumeration",
+      "enum": [
+        "success",
+        "failed"
+      ]
+    },
+    "failedAttempts": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

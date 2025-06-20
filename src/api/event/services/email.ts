@@ -1,5 +1,5 @@
 export default {
-  async sendJoinConfirmationEmail(user, event) {
+  async sendJoinConfirmationEmail(user: any, event: any) {
     try {
       await strapi.plugins['email'].service('email').send({
         to: user.email,
@@ -24,25 +24,34 @@ export default {
   async sendEventReminderEmails() {
     const currentDate = new Date();
 
-    // Find events coming up soon (e.g., within the next 2 hours)
-    const upcomingEvents = await strapi.entityService.findMany('api::event.event', {
+    // Find events coming up soon (within the next 2 hours)
+    let upcomingEvents: any = await strapi.entityService.findMany('api::event.event', {
       filters: {
         date: {
           $gte: currentDate,
-          $lt: new Date(currentDate.getTime() + 2 * 60 * 60 * 1000) // 2 hours from now
-        }
+          $lt: new Date(currentDate.getTime() + 2 * 60 * 60 * 1000), // 2 hours from now
+        },
       },
-      populate: { users: true }
+      populate: { users: true },
     });
 
-    // Track successful and failed emails
+    // Eğer tek nesne dönerse, diziye çevir
+    if (!Array.isArray(upcomingEvents)) {
+      upcomingEvents = [upcomingEvents];
+    }
+
     const reminderStats = {
       totalEvents: upcomingEvents.length,
       successfulEmails: 0,
-      failedEmails: 0
+      failedEmails: 0,
     };
 
     for (const event of upcomingEvents) {
+      // event.users array olduğundan emin ol
+      if (!event.users || !Array.isArray(event.users)) {
+        continue;
+      }
+
       for (const user of event.users) {
         try {
           await this.sendEventReminderEmail(user, event);
@@ -54,17 +63,16 @@ export default {
       }
     }
 
-    // Log reminder email statistics
     console.log('Event Reminder Email Statistics:', reminderStats);
     return reminderStats;
   },
 
-  async sendEventReminderEmail(user, event) {
+  async sendEventReminderEmail(user: any, event: any) {
     try {
       const eventDate = new Date(event.schedule);
       const formattedDate = eventDate.toLocaleString('tr-TR', {
         dateStyle: 'full',
-        timeStyle: 'short'
+        timeStyle: 'short',
       });
 
       await strapi.plugins['email'].service('email').send({
@@ -80,7 +88,7 @@ export default {
             <br>Lokasyon: ${event.location || 'Not specified'}
           </p>
           <p>Sizi aramızda görmeyi çok isteriz</p>
-        `
+        `,
       });
 
       console.log(`Reminder email sent to ${user.email}`);

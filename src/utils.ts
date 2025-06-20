@@ -10,10 +10,10 @@ export async function findResourceBySlug(entity : string, slug : string, populat
 
 export function generateHash(ctx) {
     try {
-      const { total, installment } = ctx.request.body;
+      const { total } = ctx.request.body;
       const currency_code = "TRY";
 
-      if (!total || !installment ) {
+      if (!total) {
         return ctx.badRequest('Eksik parametre: total, installment  gerekli.');
       }
 
@@ -24,7 +24,7 @@ export function generateHash(ctx) {
       // Backend tarafından invoice ID üretelim (örnek olarak timestamp + random)
       const invoice_id = `INV-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 
-      const data = total + '|' + installment + '|' + currency_code + '|' + merchant_key + '|' + invoice_id;
+      const data = total + '|' + '1' + '|' + currency_code + '|' + merchant_key + '|' + invoice_id;
 
       const iv = crypto.createHash('sha1').update(String(Math.random())).digest('hex').slice(0, 16);
       const password = crypto.createHash('sha1').update(app_secret).digest('hex');

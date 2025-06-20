@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_podcasts",
+  "info": {
+    "displayName": "Podcast"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Voice": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "Description": {
+      "type": "string"
+    }
+  }
+}

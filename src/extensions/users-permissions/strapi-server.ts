@@ -1,9 +1,8 @@
 import { Strapi } from '@strapi/strapi';
 import { Context } from 'koa';
-import { errors, sanitize } from '@strapi/utils';
 import { z } from 'zod';
 
-// Define the validation schema with Zod
+// Zod ile doğrulama şeması
 const updateUserSchema = z.object({
   username: z.string()
     .min(3, 'Kullanıcı adı en az 3 karakter olmalıdır')
@@ -30,7 +29,7 @@ const updateUserSchema = z.object({
     .optional(),
 });
 
-module.exports = (plugin) => {
+module.exports = (plugin: { controllers: any; routes: any }) => {
   plugin.controllers.user.updateUser = async (ctx: Context) => {
     const user = ctx.state.user;
 
@@ -38,40 +37,51 @@ module.exports = (plugin) => {
       return ctx.unauthorized('Giriş yapmanız gerekmektedir');
     }
 
-    const updateData = ctx.request.body;
+    // ctx.request.body tipi sorun çıkarttığı için as any yaptık
+    const updateData = (ctx.request as any).body;
 
     try {
       // Validate the update data using Zod
       const validationResult = updateUserSchema.safeParse(updateData);
 
       if (!validationResult.success) {
-        return ctx.badRequest('Doğrulama Başarısız', {
-          errors: validationResult.error.flatten().fieldErrors
-        });
+        // Strapi'de ctx.badRequest tek argüman alır, obje döndürmek için ctx.body kullanacağız
+        ctx.status = 400;
+        ctx.body = {
+          message: 'Doğrulama Başarısız',
+          errors: validationResult.error.flatten().fieldErrors,
+        };
+        return;
       }
 
-      // Type-safe validated data
+      // Tip güvenli validated data
       const validatedData = validationResult.data;
 
-      // Check if there are any fields to update
       if (Object.keys(validatedData).length === 0) {
-        return ctx.badRequest('Güncellenecek geçerli alan bulunamadı');
+        ctx.status = 400;
+        ctx.body = {
+          message: 'Güncellenecek geçerli alan bulunamadı',
+        };
+        return;
       }
 
-      // Perform the update
+      // Strapi entityService.update metoduna data objesi tip uyumu için as any
       const updatedUser = await strapi.entityService.update(
         'plugin::users-permissions.user',
         user.id,
-        { data: validatedData }
+        { data: validatedData as any }
       );
 
-      return ctx.send(updatedUser);
+      ctx.send(updatedUser);
 
     } catch (error) {
       console.error('Güncelleme hatası:', error);
-      return ctx.badRequest('Güncelleme başarısız oldu', {
-        error: error instanceof Error ? error.message : 'Bilinmeyen hata'
-      });
+
+      ctx.status = 400;
+      ctx.body = {
+        message: 'Güncelleme başarısız oldu',
+        error: error instanceof Error ? error.message : 'Bilinmeyen hata',
+      };
     }
   };
 

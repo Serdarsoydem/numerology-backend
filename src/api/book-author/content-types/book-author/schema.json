@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "book_authors",
+  "info": {
+    "singularName": "book-author",
+    "pluralName": "book-authors",
+    "displayName": "BookAuthor",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "AuthorName": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "text"
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

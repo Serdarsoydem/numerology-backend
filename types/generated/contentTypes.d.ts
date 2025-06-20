@@ -403,6 +403,39 @@ export interface ApiBlogBlog extends Schema.CollectionType {
   };
 }
 
+export interface ApiBookAuthorBookAuthor extends Schema.CollectionType {
+  collectionName: 'book_authors';
+  info: {
+    description: '';
+    displayName: 'BookAuthor';
+    pluralName: 'book-authors';
+    singularName: 'book-author';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    AuthorName: Attribute.String;
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::book-author.book-author',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    Description: Attribute.Text;
+    Image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    publishedAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::book-author.book-author',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCategoryCategory extends Schema.CollectionType {
   collectionName: 'categories';
   info: {
@@ -553,11 +586,12 @@ export interface ApiEventEvent extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    date: Attribute.DateTime;
+    date: Attribute.DateTime & Attribute.Required;
     image: Attribute.Media<'images'>;
     location: Attribute.DynamicZone<
       ['shared.on-site', 'shared.online-location']
     > &
+      Attribute.Required &
       Attribute.SetMinMax<
         {
           max: 1;
@@ -565,7 +599,6 @@ export interface ApiEventEvent extends Schema.CollectionType {
         number
       >;
     maxCapacity: Attribute.Integer & Attribute.DefaultTo<-1>;
-    price: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>;
     publishedAt: Attribute.DateTime;
     schedule: Attribute.Component<'shared.cizelge', true>;
     slug: Attribute.String &
@@ -576,7 +609,7 @@ export interface ApiEventEvent extends Schema.CollectionType {
         }
       >;
     tags: Attribute.Relation<'api::event.event', 'oneToMany', 'api::tag.tag'>;
-    title: Attribute.String;
+    title: Attribute.String & Attribute.Required;
     updatedAt: Attribute.DateTime;
     updatedBy: Attribute.Relation<
       'api::event.event',
@@ -591,6 +624,8 @@ export interface ApiEventEvent extends Schema.CollectionType {
     > &
       Attribute.Private;
     video: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    zoomJoinUrl: Attribute.String;
+    zoomMeetingId: Attribute.String & Attribute.Private;
   };
 }
 
@@ -642,6 +677,37 @@ export interface ApiInterviewInterview extends Schema.CollectionType {
     > &
       Attribute.Private;
     video: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+  };
+}
+
+export interface ApiKitapKitap extends Schema.CollectionType {
+  collectionName: 'kitaps';
+  info: {
+    displayName: 'Kitap';
+    pluralName: 'kitaps';
+    singularName: 'kitap';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::kitap.kitap',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    Podcast: Attribute.DynamicZone<['shared.podcast']>;
+    publishedAt: Attribute.DateTime;
+    Title: Attribute.String;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::kitap.kitap',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
   };
 }
 
@@ -761,26 +827,83 @@ export interface ApiNewsNews extends Schema.CollectionType {
   };
 }
 
-export interface ApiPlanPlan extends Schema.CollectionType {
-  collectionName: 'plans';
+export interface ApiPaymentLogPaymentLog extends Schema.CollectionType {
+  collectionName: 'payment_logs';
   info: {
-    description: '';
-    displayName: 'Plan';
-    pluralName: 'plans';
-    singularName: 'plan';
+    description: 'Log of all payment transactions';
+    displayName: 'Payment Log';
+    pluralName: 'payment-logs';
+    singularName: 'payment-log';
   };
   options: {
     draftAndPublish: false;
   };
   attributes: {
+    amount: Attribute.Decimal & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::payment-log.payment-log',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    currency: Attribute.String & Attribute.Required;
+    order_id: Attribute.String & Attribute.Required & Attribute.Unique;
+    payment_details: Attribute.JSON;
+    status: Attribute.Enumeration<['pending', 'success', 'failed']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'pending'>;
+    transaction_id: Attribute.String;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::payment-log.payment-log',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    user: Attribute.Relation<
+      'api::payment-log.payment-log',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    webhook_response: Attribute.JSON;
+  };
+}
+
+export interface ApiPlanPlan extends Schema.CollectionType {
+  collectionName: 'plans';
+  info: {
+    description: 'Subscription plans';
+    displayName: 'Plan';
+    pluralName: 'plans';
+    singularName: 'plan';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    consultant_meeting_limit: Attribute.Integer &
+      Attribute.Required &
+      Attribute.DefaultTo<0>;
     createdAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::plan.plan', 'oneToOne', 'admin::user'> &
       Attribute.Private;
-    description: Attribute.String;
-    features: Attribute.Component<'shared.features', true>;
-    highlighted: Attribute.Boolean;
+    description: Attribute.Text;
+    duration: Attribute.Enumeration<['monthly', 'quarterly', 'yearly']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'monthly'>;
+    features: Attribute.JSON;
     name: Attribute.String & Attribute.Required;
-    price: Attribute.Decimal;
+    price: Attribute.Decimal & Attribute.Required;
+    publishedAt: Attribute.DateTime;
+    service_usage_limit: Attribute.Integer &
+      Attribute.Required &
+      Attribute.DefaultTo<0>;
+    subscriptions: Attribute.Relation<
+      'api::plan.plan',
+      'oneToMany',
+      'api::user-subscription.user-subscription'
+    >;
     updatedAt: Attribute.DateTime;
     updatedBy: Attribute.Relation<'api::plan.plan', 'oneToOne', 'admin::user'> &
       Attribute.Private;
@@ -856,6 +979,58 @@ export interface ApiProfileProfile extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
+  };
+}
+
+export interface ApiRecurringPaymentRecurringPayment
+  extends Schema.CollectionType {
+  collectionName: 'recurring_payments';
+  info: {
+    description: 'Tekrarlayan \u00F6deme kay\u0131tlar\u0131';
+    displayName: 'Recurring Payment';
+    pluralName: 'recurring-payments';
+    singularName: 'recurring-payment';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    amount: Attribute.Decimal & Attribute.Required;
+    cardToken: Attribute.String & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::recurring-payment.recurring-payment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    currency: Attribute.String &
+      Attribute.Required &
+      Attribute.DefaultTo<'TRY'>;
+    failedAttempts: Attribute.Integer & Attribute.DefaultTo<0>;
+    lastPaymentDate: Attribute.DateTime;
+    lastPaymentStatus: Attribute.Enumeration<['success', 'failed']>;
+    nextPaymentDate: Attribute.DateTime & Attribute.Required;
+    plan: Attribute.Relation<
+      'api::recurring-payment.recurring-payment',
+      'manyToOne',
+      'api::plan.plan'
+    >;
+    status: Attribute.Enumeration<['active', 'suspended', 'cancelled']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'active'>;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::recurring-payment.recurring-payment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    user: Attribute.Relation<
+      'api::recurring-payment.recurring-payment',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1039,44 +1214,6 @@ export interface ApiTermsAndConditionTermsAndCondition
       'admin::user'
     > &
       Attribute.Private;
-  };
-}
-
-export interface ApiUserSubscriptionUserSubscription
-  extends Schema.CollectionType {
-  collectionName: 'user_subscriptions';
-  info: {
-    displayName: 'User Subscription';
-    pluralName: 'user-subscriptions';
-    singularName: 'user-subscription';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::user-subscription.user-subscription',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    priceReceived: Attribute.Decimal;
-    publishedAt: Attribute.DateTime;
-    remainingConsultantMeetings: Attribute.Integer;
-    remainingServiceUsages: Attribute.Integer;
-    updatedAt: Attribute.DateTime;
-    updatedBy: Attribute.Relation<
-      'api::user-subscription.user-subscription',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    user: Attribute.Relation<
-      'api::user-subscription.user-subscription',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
   };
 }
 
@@ -1653,23 +1790,26 @@ declare module '@strapi/types' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::blog.blog': ApiBlogBlog;
+      'api::book-author.book-author': ApiBookAuthorBookAuthor;
       'api::category.category': ApiCategoryCategory;
       'api::contact-message.contact-message': ApiContactMessageContactMessage;
       'api::contact.contact': ApiContactContact;
       'api::event.event': ApiEventEvent;
       'api::interview.interview': ApiInterviewInterview;
+      'api::kitap.kitap': ApiKitapKitap;
       'api::live-event.live-event': ApiLiveEventLiveEvent;
       'api::meeting-log.meeting-log': ApiMeetingLogMeetingLog;
       'api::news.news': ApiNewsNews;
+      'api::payment-log.payment-log': ApiPaymentLogPaymentLog;
       'api::plan.plan': ApiPlanPlan;
       'api::privacy-policy.privacy-policy': ApiPrivacyPolicyPrivacyPolicy;
       'api::profile.profile': ApiProfileProfile;
+      'api::recurring-payment.recurring-payment': ApiRecurringPaymentRecurringPayment;
       'api::service-call-log.service-call-log': ApiServiceCallLogServiceCallLog;
       'api::service.service': ApiServiceService;
       'api::story.story': ApiStoryStory;
       'api::tag.tag': ApiTagTag;
       'api::terms-and-condition.terms-and-condition': ApiTermsAndConditionTermsAndCondition;
-      'api::user-subscription.user-subscription': ApiUserSubscriptionUserSubscription;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

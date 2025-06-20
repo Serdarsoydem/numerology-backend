@@ -95,10 +95,13 @@ export interface SharedOnSiteLocation extends Schema.Component {
 export interface SharedOnlineLocation extends Schema.Component {
   collectionName: 'components_shared_online_locations';
   info: {
+    description: 'Configure online meeting locations';
     displayName: 'Online Location';
   };
   attributes: {
-    platform: Attribute.Enumeration<['zoom', 'youtube', 'google_meets']>;
+    platform: Attribute.Enumeration<['zoom']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'zoom'>;
     url: Attribute.String;
   };
 }
@@ -110,6 +113,18 @@ export interface SharedParagraph extends Schema.Component {
     displayName: 'Paragraph';
   };
   attributes: {};
+}
+
+export interface SharedPodcast extends Schema.Component {
+  collectionName: 'components_shared_podcasts';
+  info: {
+    displayName: 'Podcast';
+  };
+  attributes: {
+    Description: Attribute.String;
+    Title: Attribute.String;
+    Voice: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
+  };
 }
 
 export interface SharedSocial extends Schema.Component {
@@ -138,6 +153,7 @@ declare module '@strapi/types' {
       'shared.on-site-location': SharedOnSiteLocation;
       'shared.online-location': SharedOnlineLocation;
       'shared.paragraph': SharedParagraph;
+      'shared.podcast': SharedPodcast;
       'shared.social': SharedSocial;
     }
   }

@@ -5,9 +5,9 @@
 import { factories } from '@strapi/strapi'
 import {findResourceBySlug} from "../../../utils";
 
-export default factories.createCoreController('api::interview.interview',({ strapi }) => ({
+export default factories.createCoreController('api::interview.interview',({ strapi }: { strapi: any }) => ({
   // Custom method to find a blog by slug
-  async findBySlug(ctx) {
+  async findBySlug(ctx: any) {
     const { slug } = ctx.params; // Get slug from request parameters
     const blog = await findResourceBySlug('interview',slug,['image', 'video', 'category','tags','video','publishedAt','author']);
 

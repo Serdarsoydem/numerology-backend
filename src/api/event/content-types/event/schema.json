@@ -13,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "category": {
       "type": "relation",
@@ -35,7 +36,8 @@
       "inversedBy": "events"
     },
     "date": {
-      "type": "datetime"
+      "type": "datetime",
+      "required": true
     },
     "image": {
       "type": "media",
@@ -44,11 +46,6 @@
       "allowedTypes": [
         "images"
       ]
-    },
-    "price": {
-      "type": "integer",
-      "required": true,
-      "default": 0
     },
     "slug": {
       "type": "customField",
@@ -63,7 +60,8 @@
         "shared.on-site",
         "shared.online-location"
       ],
-      "max": 1
+      "max": 1,
+      "required": true
     },
     "video": {
       "type": "media",
@@ -89,6 +87,13 @@
       "type": "integer",
       "required": false,
       "default": -1
+    },
+    "zoomMeetingId": {
+      "type": "string",
+      "private": true
+    },
+    "zoomJoinUrl": {
+      "type": "string"
     }
   }
 }

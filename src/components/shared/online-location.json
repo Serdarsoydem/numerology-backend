@@ -1,20 +1,21 @@
 {
   "collectionName": "components_shared_online_locations",
   "info": {
-    "displayName": "Online Location"
+    "displayName": "Online Location",
+    "description": "Configure online meeting locations"
   },
   "options": {},
   "attributes": {
-    "url": {
-      "type": "string"
-    },
     "platform": {
       "type": "enumeration",
       "enum": [
-        "zoom",
-        "youtube",
-        "google_meets"
-      ]
+        "zoom"
+      ],
+      "default": "zoom",
+      "required": true
+    },
+    "url": {
+      "type": "string"
     }
   }
 }
